@@ -253,8 +253,6 @@ class AI:
     def calculateb(self,gametiles):
         res = 0
 
-        print('hi')
-
         pieceValues = {
             'P': -100, 'N': -350, 'B': -350, 'R': -525, 'Q': -1000, 'K': -10000,
             'p': 100, 'n': 350, 'b': 350, 'r': 525, 'q': 1000, 'k': 10000
