@@ -251,47 +251,44 @@ class AI:
 
 
     def calculateb(self,gametiles):
-        value=0
+        res = 0
+
+        print('hi')
+
+        pieceValues = {
+            'P': -100, 'N': -350, 'B': -350, 'R': -525, 'Q': -1000, 'K': -10000,
+            'p': 100, 'n': 350, 'b': 350, 'r': 525, 'q': 1000, 'k': 10000
+        }
+
         for x in range(8):
             for y in range(8):
-                    if gametiles[y][x].pieceonTile.tostring()=='P':
-                        value=value-100
+                currPiece = gametiles[x][y].pieceonTile.tostring()
+                if currPiece in pieceValues:
+                    res += pieceValues[currPiece]
 
-                    if gametiles[y][x].pieceonTile.tostring()=='N':
-                        value=value-350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='B':
-                        value=value-350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='R':
-                        value=value-525
-
-                    if gametiles[y][x].pieceonTile.tostring()=='Q':
-                        value=value-1000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='K':
-                        value=value-10000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='p':
-                        value=value+100
-
-                    if gametiles[y][x].pieceonTile.tostring()=='n':
-                        value=value+350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='b':
-                        value=value+350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='r':
-                        value=value+525
-
-                    if gametiles[y][x].pieceonTile.tostring()=='q':
-                        value=value+1000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='k':
-                        value=value+10000
-
-        return value
-
+            # Upon research, I found that maintaining center of the board could also be a winning factor
+            # Therefore, awarding more points for pieces in the center
+            if 2 <= x <= 5 and 2 <= y <= 5:
+                if currPiece in ['P', 'N', 'B', 'R', 'Q', 'K']:
+                    res -= 5
+                elif currPiece in ['p', 'n', 'b', 'r', 'q', 'k']:
+                    res += 5
+            
+            # While testing, I noticed that the AI only cared about keeping the pawns in the middle, pawn progression is also important
+            if currPiece in ['N', 'B', 'n', 'b']:
+                    if y in [6, 7] and currPiece.isupper():
+                        res -= 10
+                    elif y in [0, 1] and currPiece.islower():
+                        res += 10
+            
+            # Pawn progression
+            if currPiece in ['P', 'p']:
+                if currPiece.isupper() and y in [3, 4]:  # Award points for white pawns in the center
+                    total_value -= 5
+                elif currPiece.islower() and y in [3, 4]:  # Award points for black pawns in the center
+                    total_value += 5
+        
+        return res
 
     def move(self,gametiles,y,x,n,m):
         promotion=False
