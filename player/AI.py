@@ -281,11 +281,11 @@ class AI:
                     elif y in [0, 1] and currPiece.islower():
                         res += 10
             
-            # Pawn progression
+            # Pawn progression (If nothing else we could do, moving the pawns forward to possibly promote is a good idea)
             if currPiece in ['P', 'p']:
-                if currPiece.isupper() and y in [3, 4]:  # Award points for white pawns in the center
+                if currPiece.isupper() and y in [3, 4]:
                     total_value -= 5
-                elif currPiece.islower() and y in [3, 4]:  # Award points for black pawns in the center
+                elif currPiece.islower() and y in [3, 4]:
                     total_value += 5
         
         return res
