@@ -266,26 +266,17 @@ class AI:
 
             # Upon research, I found that maintaining center of the board could also be a winning factor
             # Therefore, awarding more points for pieces in the center
-            if 2 <= x <= 5 and 2 <= y <= 5:
+            if 2 <= x <= 5:
                 if currPiece in ['P', 'N', 'B', 'R', 'Q', 'K']:
-                    res -= 5
+                    res -= 10
                 elif currPiece in ['p', 'n', 'b', 'r', 'q', 'k']:
-                    res += 5
+                    res += 10
+
+            # Push the AI to promote the pawns
+            if x == 7:
+                if currPiece in ['p']:
+                    res += 10
             
-            # While testing, I noticed that the AI only cared about keeping the pawns in the middle, pawn progression is also important
-            if currPiece in ['N', 'B', 'n', 'b']:
-                    if y in [6, 7] and currPiece.isupper():
-                        res -= 10
-                    elif y in [0, 1] and currPiece.islower():
-                        res += 10
-            
-            # Pawn progression (If nothing else we could do, moving the pawns forward to possibly promote is a good idea)
-            if currPiece in ['P', 'p']:
-                if currPiece.isupper() and y in [3, 4]:
-                    total_value -= 5
-                elif currPiece.islower() and y in [3, 4]:
-                    total_value += 5
-        
         return res
 
     def move(self,gametiles,y,x,n,m):
